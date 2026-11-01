@@ -123,17 +123,21 @@ export function resolveStorageUrl(pathOrUrl) {
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
   const backendBase = apiUrl.replace(/\/api\/?$/, '');
 
+  // Jika path adalah dokumen KYC / storage-file yang membutuhkan token autentikasi
+  if (trimmed.includes('kyc_documents') || trimmed.includes('/storage-file/')) {
+    let cleanPath = trimmed.replace(/^.*\/storage-file\//, '').replace(/^.*\/storage\//, '').replace(/^\/+/, '');
+    if (cleanPath.includes('?')) {
+      cleanPath = cleanPath.split('?')[0];
+    }
+    const token = typeof window !== 'undefined' ? (localStorage.getItem('admin_access_token') || localStorage.getItem('auth_token')) : null;
+    const authQuery = token ? `?token=${encodeURIComponent(token)}` : '';
+    return `${apiUrl}/storage-file/${cleanPath}${authQuery}`;
+  }
+
   // Jika URL berisi path /storage/ (baik URL absolut localhost/127.0.0.1 maupun path relatif)
   if (trimmed.includes('/storage/')) {
     const storageIndex = trimmed.indexOf('/storage/');
     const pathAfterStorage = trimmed.slice(storageIndex + '/storage/'.length).replace(/^\/+/, '');
-    return `${backendBase}/storage/${pathAfterStorage}`;
-  }
-
-  // Jika URL berisi path proxy /storage-file/
-  if (trimmed.includes('/storage-file/')) {
-    const storageFileIndex = trimmed.indexOf('/storage-file/');
-    const pathAfterStorage = trimmed.slice(storageFileIndex + '/storage-file/'.length).replace(/^\/+/, '');
     return `${backendBase}/storage/${pathAfterStorage}`;
   }
 

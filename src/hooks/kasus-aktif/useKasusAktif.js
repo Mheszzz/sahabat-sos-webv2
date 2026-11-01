@@ -107,7 +107,7 @@ export function useKasusAktif() {
 
   // WebSocket Real-time Listener (command-center)
   useEffect(() => {
-    const channel = echo.channel('command-center');
+    const channel = echo.private('command-center');
 
     // Handler ketika sinyal darurat SOS baru masuk
     const handleNewSOS = (data) => {

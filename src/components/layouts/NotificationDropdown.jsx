@@ -63,7 +63,7 @@ export default function NotificationDropdown() {
   useEffect(() => {
     fetchActiveSos();
 
-    const channel = echo.channel('command-center');
+    const channel = echo.private('command-center');
 
     const handleSosCreated = () => {
       fetchActiveSos();

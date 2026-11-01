@@ -329,7 +329,7 @@ export default function PetaPemantauanPage() {
   useEffect(() => {
     fetchMapData();
 
-    const channel = echo.channel('command-center');
+    const channel = echo.private('command-center');
 
     const handleRelawanLocation = (data) => {
       if (!data?.relawan_id) return;

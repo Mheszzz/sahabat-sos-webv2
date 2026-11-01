@@ -468,7 +468,7 @@ export function useDetailKasus() {
   // Listener WebSocket real-time untuk command center
   useEffect(() => {
     if (!id) return;
-    const channel = echo.channel('command-center');
+    const channel = echo.private('command-center');
 
     // 1. Sinkronisasi pergerakan relawan secara real-time
     const handleRelawanLocation = (data) => {

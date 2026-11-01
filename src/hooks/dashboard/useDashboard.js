@@ -328,7 +328,7 @@ export function useDashboard() {
   useEffect(() => {
     fetchDashboardData();
 
-    const channel = echo.channel('command-center');
+    const channel = echo.private('command-center');
 
     // 1. Relawan Location Real-time Update
     const handleRelawanLocation = (data) => {

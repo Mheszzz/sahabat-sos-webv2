@@ -47,7 +47,7 @@ export default function AudioSirenController({ className = '' }) {
 
   useEffect(() => {
     // 1. Channel command-center untuk panggilan SOS baru dan status update
-    const cmdChannel = echo.channel('command-center');
+    const cmdChannel = echo.private('command-center');
 
     const handleSosCreated = (data) => {
       console.log('🚨 SOSCreated diterima di AudioSirenController:', data);
@@ -127,7 +127,7 @@ export default function AudioSirenController({ className = '' }) {
     cmdChannel.listen('SOSUpdateStatus', handleSosUpdateStatus);
 
     // 2. Channel posko-channel untuk alarm sirene posko massal
-    const poskoChannel = echo.channel('posko-channel');
+    const poskoChannel = echo.private('posko-channel');
     const handlePoskoSirene = (data) => {
       console.log('🔊 PoskoSireneTriggered diterima:', data);
       const isActive = data?.sirene_active === true || data?.action === 'on' || data?.action === 'trigger';

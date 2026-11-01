@@ -31,7 +31,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      const isAuthEndpoint = error.config?.url?.includes('/auth/');
+      const isAuthEndpoint =
+        error.config?.url?.includes('/auth/') ||
+        error.config?.url?.includes('/login');
       // Jangan lakukan hard-redirect jika error 401 berasal dari endpoint login itu sendiri
       if (!isAuthEndpoint) {
         localStorage.removeItem('admin_access_token');
