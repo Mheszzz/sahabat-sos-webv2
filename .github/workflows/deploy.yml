@@ -1,0 +1,20 @@
+name: Deploy Web
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-to-wsl:
+    runs-on: self-hosted
+    steps:
+      - name: Update Web & Rebuild Container
+        run: |
+          cd $HOME/sahabat-sos/sahabat-sos-web
+          git pull origin main
+
+          cd $HOME/sahabat-sos
+          docker compose up -d --build web
+
+          echo "✅ Web Admin berhasil dideploy di WSL!"
