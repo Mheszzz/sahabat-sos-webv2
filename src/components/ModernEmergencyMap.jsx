@@ -1,11 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster';
 import {
   Navigation, Plus, Minus, RotateCcw, Eye, Phone,
   AlertTriangle, Shield, HeartPulse, Clock, X, Radio,
   MessageCircle, MapPin, Layers, Users, Loader2
 } from 'lucide-react';
+import { createClusterIcon } from '../utils/mapClusterUtils';
 
 // Pusat Default Wilayah D.I. Yogyakarta (Tugu / Malioboro)
 export const DEFAULT_MAP_CENTER = [-7.7956, 110.3695];
@@ -87,7 +91,15 @@ export default function ModernEmergencyMap({
       attribution: 'Tiles &copy; Esri',
     }).addTo(map);
 
-    markersLayerRef.current = L.layerGroup().addTo(map);
+    markersLayerRef.current = L.markerClusterGroup({
+      maxClusterRadius: 60,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      disableClusteringAtZoom: 16,
+      chunkedLoading: true,
+      iconCreateFunction: createClusterIcon,
+    }).addTo(map);
     mapInstanceRef.current = map;
 
     // Invalidate size once rendered
@@ -319,7 +331,7 @@ export default function ModernEmergencyMap({
         iconAnchor: [70, 18],
       });
 
-      const marker = L.marker([item.lat, item.lng], { icon: customIcon });
+      const marker = L.marker([item.lat, item.lng], { icon: customIcon, _type: item.type });
 
       marker.on('click', () => {
         handleSetSelectedItem(item);
