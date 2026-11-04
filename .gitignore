@@ -28,5 +28,6 @@ dist-ssr
 .env.*
 .env.development
 .env.production
+.md
 # Kecualikan file example agar tetap ter-push
 !.env.example
